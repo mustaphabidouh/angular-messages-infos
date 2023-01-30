@@ -42,12 +42,14 @@ export interface Notification {
   styleUrls: ['./notification-list.component.css'],
 })
 export class NotificationListComponent implements OnInit, OnDestroy {
-  private supscriptions: Subscription[];
+  private subscriptions: Subscription[];
+
   notifications: Notification[] = [];
+
   constructor(private messageBus: MessageBusService) {}
 
   ngOnInit() {
-    this.supscriptions = [
+    this.subscriptions = [
       this.messageBus
         .observe(MessageAction.ShowNotification)
         .subscribe(
@@ -57,10 +59,10 @@ export class NotificationListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.supscriptions.forEach((s) => s.unsubscribe());
+    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
   animationDone(index) {
-    this.notifications.slice(index, 1);
+    this.notifications.splice(index, 1);
   }
 }
